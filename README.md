@@ -7,7 +7,7 @@ This project was created to provide dictionary functionality within Discord serv
 2. Follow on-screen instructions at [WorldClockAPI](http://worldclockapi.com/) to create custom API key
 3. Record your custom API key
 4. Go to Discord Developer Portal [WordsAPI](https://discord.com/developers/applications) and create a new application/bot
-5. Record your personal Discord token that corresponds to your bot
+5. Record the personal Discord token that corresponds to your bot
 6. Create a .env file in the same directory as *bot.py* and *timer.py* with the following lines: 
 ```
       DISCORD_TOKEN={your_token}
