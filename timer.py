@@ -16,12 +16,16 @@ def check(current, calls):
     if js['dayOfTheWeek'] != current:
         calls = 0
 
+# Returns string corresponding to current dayOfTheWeek
 def current():
+    # Connect with worldclockapi
     url = 'http://worldclockapi.com/api/json/est/now'
     doc = urllib.request.urlopen(url)
     data = doc.read().decode()
+    # Create JSON object with api data
     try:
         js = json.loads(data)
     except:
         js = None
+    # Return current dayOfTheWeek
     return js['dayOfTheWeek']
