@@ -13,5 +13,12 @@ This project was created to provide dictionary functionality within Discord serv
 ```      
 7. Invite bot to Discord server
 8. Run *bot.py* and enjoy your new bot!
+## Commands
+- "usage": displays all bot commands 
+- "def WORD": outputs most common dictionary definition of WORD
+- "syn WORD": outputs list of synonyms of WORD
+- "rhy WORD SYLLABLES(optional)": outputs random rhyme of WORD that has the corresponding SYLLABLES
+- "ex WORD": outputs an example of WORD
+- "rand": outputs random word
 ## Contact
 Created by [Aiden Szeto](https://www.linkedin.com/in/aidenszeto/) - feel free to contact me!
