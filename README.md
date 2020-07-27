@@ -9,4 +9,6 @@ This project was created to provide dictionary functionality within Discord serv
 6. Create a .env file with the following lines: 
       DISCORD_TOKEN={your_token} and API_KEY={your_key}
 7. Invite bot to Discord server
-8. Run bot.py and enjoy!
+8. Run bot.py and enjoy your new bot!
+# Contact
+Created by Aiden Szeto - feel free to contact me!
