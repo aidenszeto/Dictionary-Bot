@@ -7,7 +7,6 @@ This project was created to provide dictionary functionality within Discord serv
 4. Go to Discord Developer Portal (https://discord.com/developers/applications) and create a new application/bot
 5. Record personal Discord token for your bot
 6. Create a .env file with the following lines: 
-      DISCORD_TOKEN={your_token}
-      API_KEY={your_key}
+      DISCORD_TOKEN={your_token} and API_KEY={your_key}
 7. Invite bot to Discord server
 8. Run bot.py and enjoy!
