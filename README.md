@@ -1,2 +1,2 @@
 # DictionaryBot
-Discord bot with dictionary functionality
+This project was created to provide dictionary functionality within Discord servers in the form of an automated bot. Using the WordsAPI (https://www.wordsapi.com/) and World Clock API (http://worldclockapi.com/), the program web scrapes live JSON data to respond to user commands. To utilize this bot's features, a user must invite the bot to a custom Discord server. Afterwards, "usage" may be typed into any channel within the server to display all of the DictionaryBot's commands.
