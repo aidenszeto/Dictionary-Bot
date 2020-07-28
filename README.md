@@ -25,7 +25,7 @@ This project was created to provide dictionary functionality within Discord serv
 - **ex WORD**: outputs an example of WORD
 - **rand**: outputs random word
 ## Database
-The current *Dictionary.db* is a sample database that will be populated as the progrma continues to scrape data and will change depending on the bot's usage. In order to optimize bot performance, after 10 differing **syn**, **rhy**, or **ex** calls for each word, the application will only output data from the database, rather than the [WordsAPI](https://www.wordsapi.com/).
+The current *Dictionary.db* is a sample database that will be populated as the progrma continues to scrape data and will change depending on the bot's usage. In order to optimize bot performance and limit API calls, after 10 differing **syn**, **rhy**, or **ex** commands for each word, the application will only output data from the database, rather than the [WordsAPI](https://www.wordsapi.com/). As a result, following the 10 commands, no new API calls will be made.
 
 To disable the database and force the bot to scrape web data in all scenarios, simply remove
 ```
