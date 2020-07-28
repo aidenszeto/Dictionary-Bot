@@ -99,7 +99,7 @@ def addRhy(word, rhyme, syl):
             exit()
     print('Adding ' + rUp + ' to database')
     cur.execute('''INSERT INTO RHYMES (word, rhyme, syllables)
-                    VALUES (?, ?, ?)''', (w, d, s))
+                    VALUES (?, ?, ?)''', (w, r, s))
     conn.commit()
 # Return true if 10 rhymes with corresponding syllables in database, false if not
 def inRhy(word, syl):
@@ -120,8 +120,20 @@ def inRhy(word, syl):
         tenRhy = True
         print('Already 10 rhymes for ' + wUp + ' in database')
     else:
-        print('Less than 10 rhymes for ' + wUp + ' in database')    
+        print('Less than 10 rhymes for ' + wUp + ' in database')
     return tenRhy
+# Return random rhyme, with or without syllable parmeter
+def getRhy(word, syl):
+    wUp = str(word.upper())
+    if syl == None:
+        existing = cur.execute('''SELECT * FROM SYNONYMS WHERE word = ? ORDER BY random()''', (word,))
+    else:
+        s = int(syl)
+        existing = cur.execute('''SELECT * FROM SYNONYMS WHERE word = ? AND syllable = ? ORDER BY random()''', (word, s))
+    print('Retrieved ' + wUp + ' from database')
+    for row in existing:
+        random = row[1]
+    return random
 
 
 # Add word and rhyme to RHYMES table

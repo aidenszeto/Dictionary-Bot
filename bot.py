@@ -169,7 +169,7 @@ async def on_message(message):
           else:
               # If no syllable count provided check database and API
               if len(input) == 2:
-                  # Get rhyme from datbase
+                  # Get rhyme from datbase if 10 instances
                   if database.inRhy(word, None):
                       response = database.getRhy(word, None)
                   else:
@@ -197,9 +197,9 @@ async def on_message(message):
                       database.addRhy(word, response, int(syllables.estimate(response)))
                   await message.channel.send(response + " rhymes with " + word)
             # If syllable count provided, check datbase and API for corresponding rhyme
-            elif len(input) == 3:
+              elif len(input) == 3:
                 sylin = int(input[2])
-                # Get rhyme from datbase
+                # Get rhyme from datbase if 10 instances
                 if database.inRhy(word, sylin):
                     response = database.getRhy(word, sylin)
                 else:
