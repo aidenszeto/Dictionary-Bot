@@ -170,7 +170,7 @@ async def on_message(message):
             # Check JSON object for errors (ie. invalid WORD)
             if not js or 'rhymes' not in js:
                 message.channel.send('Rhyme not found')
-            # Create response with any random word rhyme
+            # Create rhymes list
             rhymes = js["rhymes"]["all"]
             # If no syllable count is provided, output random rhyme
             if len(input) == 2:
