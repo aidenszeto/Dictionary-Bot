@@ -6,7 +6,7 @@ import json
 import http.client
 import re
 import syllables
-import timer
+import timer, database
 from sys import exit
 from dotenv import load_dotenv
 
@@ -108,28 +108,36 @@ async def on_message(message):
         if len(input) != 2:
             await message.channel.send("Usage: syn WORD")
         else:
-            # Connect to word API with correct headers
-            conn = http.client.HTTPSConnection("wordsapiv1.p.rapidapi.com")
-            headers = {
-                'x-rapidapi-host': "wordsapiv1.p.rapidapi.com",
-                'x-rapidapi-key': KEY
-                }
-            conn.request("GET", "/words/" + word + "/synonyms", headers=headers)
-            # Decode UTF8 response
-            res = conn.getresponse()
-            data = res.read().decode("utf-8")
-            # Create JSON object from data
-            try:
-                js = json.loads(data)
-            except:
-                js = None
-            # Check JSON object for errors (ie. invalid WORD)
-            if not js or 'synonyms' not in js:
-                message.channel.send('Synonym not found')
-            # Respond with word synonyms
-            synonyms = js["synonyms"]
-            response = random.choice(synonyms)
-            await message.channel.send("A synonym of " + word + " is " + response)
+            # If word is already in db, set response to synonym from db
+            if database.inSyn(word):
+                response = database.getSyn(word)
+            # If word is not in db, set response to synonym from API
+            else:
+                # Connect to word API with correct headers
+                conn = http.client.HTTPSConnection("wordsapiv1.p.rapidapi.com")
+                headers = {
+                    'x-rapidapi-host': "wordsapiv1.p.rapidapi.com",
+                    'x-rapidapi-key': KEY
+                    }
+                conn.request("GET", "/words/" + word + "/synonyms", headers=headers)
+                # Decode UTF8 response
+                res = conn.getresponse()
+                data = res.read().decode("utf-8")
+                # Create JSON object from data
+                try:
+                    js = json.loads(data)
+                except:
+                    js = None
+                # Check JSON object for errors (ie. invalid WORD)
+                if not js or 'synonyms' not in js:
+                    message.channel.send('Synonym not found')
+                # Set response to random synonym from API
+                synonyms = js["synonyms"]
+                response = random.choice(synonyms)
+                # Add word and synonym to database
+                database.addSyn(word, response)
+            # Send response
+            await message.channel.send(response + " is a synonym of " + word)
             # Increment calls and set current to new js['dayOfTheWeek']
             calls += 1
             current = timer.current()
