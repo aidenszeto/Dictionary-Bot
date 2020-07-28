@@ -23,19 +23,19 @@ def addSyn(word, synonym):
                     VALUES (?, ?)''', (w, s))
     conn.commit()
 
-# Return true if at least 5 synonyms is in database, false if not
+# Return true if at least 10 synonyms is in database, false if not
 def inSyn(word):
-    fiveSyn = False
+    tenSyn = False
     count = 0
     existing = cur.execute('''SELECT * FROM SYNONYMS''')
     for row in existing:
         if str(row[0]) == word:
             count += 1
     # Set fiveSyn to True if there are 5 or more synonyms
-    if count >= 5:
-        fiveSyn = True
+    if count >= 10:
+        tenSyn = True
     print('Less than 5 synonyms for ' + word + ' in database')
-    return fiveSyn
+    return tenSyn
 
 # Return random synonym for word from database
 def getSyn(word):
