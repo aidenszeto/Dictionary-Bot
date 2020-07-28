@@ -66,26 +66,34 @@ async def on_message(message):
         if len(input) != 2:
             await message.channel.send("Usage: def WORD")
         else:
-            # Connect to word API with correct headers
-            conn = http.client.HTTPSConnection("wordsapiv1.p.rapidapi.com")
-            headers = {
-                'x-rapidapi-host': "wordsapiv1.p.rapidapi.com",
-                'x-rapidapi-key': KEY
-                }
-            conn.request("GET", "/words/" + word + "/definitions", headers=headers)
-            # Decode UTF8 response
-            res = conn.getresponse()
-            data = res.read().decode("utf-8")
-            # Create JSON object from data
-            try:
-                js = json.loads(data)
-            except:
-                js = None
-            # Check JSON object for errors (ie. invalid WORD)
-            if not js or 'definitions' not in js:
-                message.channel.send('Definition not found')
-            # Respond with word definition
-            response = word + ': ' + js["definitions"][0]['definition']
+            # If word is already in db, set response to definition from db
+            if database.inDef(word):
+                response = str(database.getDef(word))
+            # If word is not in db, set response to definition from API
+            else:
+                # Connect to word API with correct headers
+                conn = http.client.HTTPSConnection("wordsapiv1.p.rapidapi.com")
+                headers = {
+                    'x-rapidapi-host': "wordsapiv1.p.rapidapi.com",
+                    'x-rapidapi-key': KEY
+                    }
+                conn.request("GET", "/words/" + word + "/definitions", headers=headers)
+                # Decode UTF8 response
+                res = conn.getresponse()
+                data = res.read().decode("utf-8")
+                # Create JSON object from data
+                try:
+                    js = json.loads(data)
+                except:
+                    js = None
+                # Check JSON object for errors (ie. invalid WORD)
+                if not js or 'definitions' not in js:
+                    message.channel.send('Definition not found')
+                # Set response to definition from PI
+                response = word + ': ' + js["definitions"][0]['definition']
+                # Add word and synonym to database
+                database.addDef(word, response)
+            # Send response
             await message.channel.send(response)
             # Increment calls and set current to new js['dayOfTheWeek']
             calls += 1
@@ -220,27 +228,35 @@ async def on_message(message):
         if len(input) != 2:
             await message.channel.send("Usage: ex WORD")
         else:
-            # Connect to word API with correct headers
-            conn = http.client.HTTPSConnection("wordsapiv1.p.rapidapi.com")
-            headers = {
-                'x-rapidapi-host': "wordsapiv1.p.rapidapi.com",
-                'x-rapidapi-key': KEY
-                }
-            conn.request("GET", "/words/" + word + "/examples", headers=headers)
-            # Decode UTF8 response
-            res = conn.getresponse()
-            data = res.read().decode("utf-8")
-            # Create JSON object from data
-            try:
-                js = json.loads(data)
-            except:
-                js = None
-            # Check JSON object for errors (ie. invalid WORD)
-            if not js or 'examples' not in js:
-                message.channel.send('Example not found')
-            # Respond with word example
-            examples = js["examples"]
-            response = random.choice(examples)
+            # If word is already in db, set response to example from db
+            if database.inEx(word):
+                response = str(database.getEx(word))
+            # If word is not in db, set response to example from API
+            else:
+                # Connect to word API with correct headers
+                conn = http.client.HTTPSConnection("wordsapiv1.p.rapidapi.com")
+                headers = {
+                    'x-rapidapi-host': "wordsapiv1.p.rapidapi.com",
+                    'x-rapidapi-key': KEY
+                    }
+                conn.request("GET", "/words/" + word + "/examples", headers=headers)
+                # Decode UTF8 response
+                res = conn.getresponse()
+                data = res.read().decode("utf-8")
+                # Create JSON object from data
+                try:
+                    js = json.loads(data)
+                except:
+                    js = None
+                # Check JSON object for errors (ie. invalid WORD)
+                if not js or 'examples' not in js:
+                    message.channel.send('Example not found')
+                # Set response to random example from API
+                examples = js["examples"]
+                response = random.choice(examples)
+                # Add word and synonym to database
+                database.addEx(word, response)
+            # Send response
             await message.channel.send("example: " + response)
             # Increment calls and set current to new js['dayOfTheWeek']
             calls += 1
