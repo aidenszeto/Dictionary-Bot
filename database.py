@@ -1,5 +1,4 @@
 import sqlite3
-import random
 from sys import exit
 
 # Connect to database
@@ -32,9 +31,11 @@ def inSyn(word):
 
 # Return random synonym for word from database
 def getSyn(word):
-    existing = cur.execute('''SELECT synonym FROM SYNONYMS WHERE word = ?''', (word))
+    existing = cur.execute('''SELECT * FROM SYNONYMS WHERE word = ? ORDER BY random()''', (word,))
     print('Retrieved synonym from database')
-    return random.choice(existing)
+    for row in existing:
+        random = row[1]
+    return random
 
 
 conn.commit()
