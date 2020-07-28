@@ -110,7 +110,7 @@ async def on_message(message):
         else:
             # If word is already in db, set response to synonym from db
             if database.inSyn(word):
-                response = database.getSyn(word)
+                response = str(database.getSyn(word))
             # If word is not in db, set response to synonym from API
             else:
                 # Connect to word API with correct headers
