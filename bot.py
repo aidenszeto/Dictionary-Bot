@@ -1,15 +1,14 @@
 import os
 import random
 import discord
-from dotenv import load_dotenv
-
 import urllib.request, urllib.parse, urllib.error
 import json
 import http.client
 import re
-import timer
 import syllables
+import timer
 from sys import exit
+from dotenv import load_dotenv
 
 
 # Connect to Discord and load API key
@@ -129,8 +128,8 @@ async def on_message(message):
                 message.channel.send('Synonym not found')
             # Respond with word synonyms
             synonyms = js["synonyms"]
-            response = ", ".join(synonyms)
-            await message.channel.send("synonyms: " + response)
+            response = random.choice(synonyms)
+            await message.channel.send("A synonym of " + word + " is " + response)
             # Increment calls and set current to new js['dayOfTheWeek']
             calls += 1
             current = timer.current()
