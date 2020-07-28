@@ -158,63 +158,94 @@ async def on_message(message):
     # Usage: rhy WORD SYLLABLES(optional)
     # If usage is followed, use word API to return a rhyme of WORD
     elif re.search('^rhy ', message.content.lower()):
-        # If it is a new day, reset calls count to 0
-        timer.check(current, calls)
-        # Split input into 'rhy' and 'WORD' and assign variable to WORD
-        input = message.content.lower().split()
-        word = input[1]
-        # Check if usage is followed
-        if len(input) != 2 and len(input) != 3:
-            await message.channel.send("Usage: rhy WORD SYLLABLES(optional)")
-        else:
-            # Connect to word API with correct headers
-            conn = http.client.HTTPSConnection("wordsapiv1.p.rapidapi.com")
-            headers = {
-                'x-rapidapi-host': "wordsapiv1.p.rapidapi.com",
-                'x-rapidapi-key': KEY
-                }
-            conn.request("GET", "/words/" + word + "/rhymes", headers=headers)
-            # Decode UTF8 response
-            res = conn.getresponse()
-            data = res.read().decode("utf-8")
-            # Create JSON object from data
-            try:
-                js = json.loads(data)
-            except:
-                js = None
-            # Check JSON object for errors (ie. invalid WORD)
-            if not js or 'rhymes' not in js:
-                message.channel.send('Rhyme not found')
-            # Create rhymes list
-            rhymes = js["rhymes"]["all"]
-            # If no syllable count is provided, output random rhyme
-            if len(input) == 2:
-                response = random.choice(rhymes)
-                await message.channel.send(response + " rhymes with " + word)
-            # If syllable count is provided, output rhyme with corresponding syllables
+          # If it is a new day, reset calls count to 0
+          timer.check(current, calls)
+          # Split input into 'rhy' and 'WORD' and assign variable to WORD
+          input = message.content.lower().split()
+          word = input[1]
+          # Check if usage is followed
+          if len(input) != 2 and len(input) != 3:
+              await message.channel.send("Usage: rhy WORD SYLLABLES(optional)")
+          else:
+              # If no syllable count provided check database and API
+              if len(input) == 2:
+                  # Get rhyme from datbase
+                  if database.inRhy(word, None):
+                      response = database.getRhy(word, None)
+                  else:
+                      # Connect to word API with correct headers
+                      conn = http.client.HTTPSConnection("wordsapiv1.p.rapidapi.com")
+                      headers = {
+                          'x-rapidapi-host': "wordsapiv1.p.rapidapi.com",
+                          'x-rapidapi-key': KEY
+                          }
+                      conn.request("GET", "/words/" + word + "/rhymes", headers=headers)
+                      # Decode UTF8 response
+                      res = conn.getresponse()
+                      data = res.read().decode("utf-8")
+                      # Create JSON object from data
+                      try:
+                          js = json.loads(data)
+                      except:
+                          js = None
+                      # Check JSON object for errors (ie. invalid WORD)
+                      if not js or 'rhymes' not in js:
+                          message.channel.send('Rhyme not found')
+                      # Select random rhyme from rhymes list and add to database
+                      rhymes = js["rhymes"]["all"]
+                      response = random.choice(rhymes)
+                      database.addRhy(word, response, int(syllables.estimate(response)))
+                  await message.channel.send(response + " rhymes with " + word)
+            # If syllable count provided, check datbase and API for corresponding rhyme
             elif len(input) == 3:
                 sylin = int(input[2])
-                # Create array of rhymes with syllable count that matches sylin
-                matches = []
-                for rhyme in rhymes:
-                    if " " in rhyme or "-" in rhyme:
-                        continue
-                    # If syllable count matches sylin, add rhyme to matches array
-                    if syllables.estimate(rhyme) == sylin:
-                        matches.append(rhyme)
-                # Print random corresponding rhyme if found
-                if len(matches) == 0:
-                    message.channel.send('Rhyme not found')
+                # Get rhyme from datbase
+                if database.inRhy(word, sylin):
+                    response = database.getRhy(word, sylin)
                 else:
-                    response = random.choice(matches)
-                    await message.channel.send(response + " is a " + str(sylin) + " syllable word that rhymes with " + word)
-        # Increment calls and set current to new js['dayOfTheWeek']
-        calls += 1
-        current = timer.current()
-        # If call limit is reached, exit the bot
-        if calls >= 2500:
-            await message.channel.send("API limit has been reached")
-            exit()
+                    # Connect to word API with correct headers
+                    conn = http.client.HTTPSConnection("wordsapiv1.p.rapidapi.com")
+                    headers = {
+                        'x-rapidapi-host': "wordsapiv1.p.rapidapi.com",
+                        'x-rapidapi-key': KEY
+                        }
+                    conn.request("GET", "/words/" + word + "/rhymes", headers=headers)
+                    # Decode UTF8 response
+                    res = conn.getresponse()
+                    data = res.read().decode("utf-8")
+                    # Create JSON object from data
+                    try:
+                        js = json.loads(data)
+                    except:
+                        js = None
+                    # Check JSON object for errors (ie. invalid WORD)
+                    if not js or 'rhymes' not in js:
+                        message.channel.send('Rhyme not found')
+                    # Create rhymes list
+                    rhymes = js["rhymes"]["all"]
+                    matches = []
+                    for rhyme in rhymes:
+                        if " " in rhyme or "-" in rhyme:
+                            continue
+                        # If syllable count matches sylin, add rhyme to matches array
+                        if syllables.estimate(rhyme) == sylin:
+                            matches.append(rhyme)
+                    # Print random corresponding rhyme if found
+                    if len(matches) == 0:
+                        message.channel.send('Rhyme not found')
+                    else:
+                        # Select random rhyme from rhymes list and add to database
+                        response = random.choice(matches)
+                        database.addRhy(word, response, sylin)
+                await message.channel.send(response + " is a " + str(sylin) + " syllable rhyme of " + word)
+          # Increment calls and set current to new js['dayOfTheWeek']
+          calls += 1
+          current = timer.current()
+          # If call limit is reached, exit the bot
+          if calls >= 2500:
+              await message.channel.send("API limit has been reached")
+              exit()
+
 
     # Usage: ex WORD
     # If usage is followed, use word API to return an example of WORD
