@@ -1,13 +1,13 @@
 # DictionaryBot
 This project was created to provide dictionary functionality within Discord servers in the form of an automated bot. Using the [WordsAPI](https://www.wordsapi.com/) and [World Clock API](http://worldclockapi.com/), the program web scrapes live JSON data to respond to user commands. For more information about utilizing this bot's features, please see [**Setup**](https://github.com/aidenszeto/DictionaryBot/blob/master/README.md#setup) and [**Commands**](https://github.com/aidenszeto/DictionaryBot/blob/master/README.md#commands).
 
-*Note: The .env file is not included in repository and must be created by user. See **Setup** for more details.*
+*Note: The .env file containing the Discord Token and API Key is not included in repository and must be created by user.*
 ## Setup
 1. Download *bot.py* and *timer.py*
 2. Follow on-screen instructions at [WorldClockAPI](http://worldclockapi.com/) to create custom API key
-3. Record your custom API key
+3. Record your custom API Key
 4. Go to Discord Developer Portal [WordsAPI](https://discord.com/developers/applications) and create a new application/bot
-5. Record the Discord token that corresponds to your bot
+5. Record the Discord Token that corresponds to your bot
 6. Create a .env file in the same directory as *bot.py* and *timer.py* with the following lines: 
 ```
       DISCORD_TOKEN={your_token}
