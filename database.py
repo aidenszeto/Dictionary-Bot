@@ -80,6 +80,9 @@ def getDef(word):
     return response
 
 
+
+
+
 # Add word and rhyme to RHYMES table
 def addEx(word, example):
     w = str(word)
