@@ -31,6 +31,6 @@ To disable the database and force the bot to scrape web data in all scenarios, s
 ```
 import database.py
 ```
-from *bot.py*, along with the remaining *database.py* methods. This will in effect prevent the bot from using stored data.
+from *bot.py*, along with the remaining *database.py* methods. This, in effect, will prevent the bot from using stored data.
 ## Contact
 Created by [Aiden Szeto](https://www.linkedin.com/in/aidenszeto/) - feel free to contact me!
