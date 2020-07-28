@@ -11,7 +11,7 @@ print("Successfully connected to Dictionary.db")
 # Add word and synonym to SYNONYMS table
 def addSyn(word, synonym):
     # If synonym is already in table, exit
-    existing = cur.execute('SELECT synonym FROM SYNONYMS')
+    existing = cur.execute('''SELECT synonym FROM SYNONYMS''')
     for row in existing:
         if str(row) == synonym:
             print('Synonym already in database')
@@ -22,9 +22,9 @@ def addSyn(word, synonym):
 # Check if synonyms is already in database
 def inSyn(word):
     # Return true if at least 10 synonyms is in database, false if not
-    existing = cur.execute('SELECT word FROM SYNONYMS')
+    existing = cur.execute('''SELECT * FROM SYNONYMS''')
     for row in existing:
-        if str(row) == word:
+        if str(row[0]) == word:
             print('Synonym already in database')
             return True
     print('Synonym not in database')
@@ -32,7 +32,7 @@ def inSyn(word):
 
 # Return random synonym for word from database
 def getSyn(word):
-    existing = cur.execute('SELECT synonym FROM SYNONYMS WHERE word = ?', (word))
+    existing = cur.execute('''SELECT synonym FROM SYNONYMS WHERE word = ?''', (word))
     print('Retrieved synonym from database')
     return random.choice(existing)
 
