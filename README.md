@@ -15,6 +15,8 @@ This project was created to provide dictionary functionality within Discord serv
 ```      
 7. Invite bot to Discord server
 8. Run *bot.py* and enjoy your new bot!
+
+*Click [here](https://realpython.com/how-to-make-a-discord-bot-python/#how-to-make-a-discord-bot-in-python) for more information regarding bot setup*
 ## Commands
 - **usage**: displays all bot commands 
 - **def WORD**: outputs most common dictionary definition of WORD
