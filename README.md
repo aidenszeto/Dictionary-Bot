@@ -24,5 +24,13 @@ This project was created to provide dictionary functionality within Discord serv
 - **rhy WORD SYLLABLES(optional)**: outputs random rhyme of WORD that has the corresponding SYLLABLES
 - **ex WORD**: outputs an example of WORD
 - **rand**: outputs random word
+## Database
+The current *Dictionary.db* is a sample database that will be populated as the progrma continues to scrape data and will change depending on the bot's usage. In order to optimize bot performance, after 10 differing **syn**, **rhy**, or **ex** calls for each word, the application will only output data from the database, rather than the [WordsAPI](https://www.wordsapi.com/).
+
+To disable the database and force the bot to scrape web data in all scenarios, simply remove
+```
+import database.py
+```
+from *bot.py*, along with the remaining *database.py* methods.
 ## Contact
 Created by [Aiden Szeto](https://www.linkedin.com/in/aidenszeto/) - feel free to contact me!
