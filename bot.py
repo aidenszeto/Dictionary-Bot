@@ -91,6 +91,7 @@ async def on_message(message):
                     message.channel.send('Definition not found')
                 # Set response to definition from PI
                 response = word + ': ' + js["definitions"][0]['definition']
+                print('Retrieved ' + word.upper() + ' from API')
                 # Add word and synonym to database
                 database.addDef(word, response)
             # Send response
@@ -142,6 +143,7 @@ async def on_message(message):
                 # Set response to random synonym from API
                 synonyms = js["synonyms"]
                 response = random.choice(synonyms)
+                print('Retrieved ' + word.upper() + ' from API')
                 # Add word and synonym to database
                 database.addSyn(word, response)
             # Send response
@@ -194,6 +196,7 @@ async def on_message(message):
                       # Select random rhyme from rhymes list and add to database
                       rhymes = js["rhymes"]["all"]
                       response = random.choice(rhymes)
+                      print('Retrieved ' + word.upper() + ' from API')
                       database.addRhy(word, response, int(syllables.estimate(response)))
                   await message.channel.send(response + " rhymes with " + word)
             # If syllable count provided, check datbase and API for corresponding rhyme
@@ -285,6 +288,7 @@ async def on_message(message):
                 # Set response to random example from API
                 examples = js["examples"]
                 response = random.choice(examples)
+                print('Retrieved ' + word.upper() + ' from API')
                 # Add word and synonym to database
                 database.addEx(word, response)
             # Send response
