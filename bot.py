@@ -240,6 +240,7 @@ async def on_message(message):
                         # Select random rhyme from rhymes list and add to database
                         response = random.choice(matches)
                         database.addRhy(word, response, sylin)
+                        print('Retrieved ' + word.upper() + ' from API')
                 await message.channel.send(response + " is a " + str(sylin) + " syllable rhyme of " + word)
           # Increment calls and set current to new js['dayOfTheWeek']
           calls += 1
