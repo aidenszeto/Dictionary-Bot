@@ -88,7 +88,7 @@ def getDef(word):
     existing = cur.execute('''SELECT * FROM DEFINITIONS WHERE word = ?''', (word,))
     for row in existing:
         response = row[1]
-    print('Retrieved ' + random.upper() + ' from database')
+    print('Retrieved ' + wUp + ' from database')
     return response
 
 
